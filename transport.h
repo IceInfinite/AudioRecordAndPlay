@@ -4,8 +4,9 @@
 #include <QWidget>
 #include <QByteArray>
 
-const int MAX_BUFFER_LEN = 800 * 100; //缓冲区最大容量
-const int FRAME_LEN = 800; //单个音频帧长度800字节，50ms音频数据
+// TODO 音频帧大小影响效果，时间越短效果越差, 不知为何
+const static int MAX_BUFFER_LEN = 800 * 100; //缓冲区最大容量
+const static int FRAME_LEN = 800; //单个音频帧长度800字节，50ms音频数据
 
 class Transport : public QObject
 {
@@ -20,11 +21,11 @@ private:
 
 public slots:
     // 接受并缓存音频数据，另一线程执行
-    void receiveAudioData(const QByteArray &audioByte);
+    void receiveAudioData(const QByteArray& audio_frame);
 
 signals:
     // 缓存完毕后发送数据
-    void receiveReady(const QByteArray &frameBuffer);
+    void receiveReady(const QByteArray& audio_frame);
 };
 
 #endif // TRANSPORT_H

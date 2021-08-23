@@ -2,9 +2,9 @@
 #include <QDebug>
 
 
-AudioPlay::AudioPlay(int sampleRate, int channelCount, int sampleSize)
+AudioPlay::AudioPlay(const QAudioDeviceInfo& info, int sampleRate, int channelCount, int sampleSize)
 {
-    setAudioFormat(sampleRate,channelCount,sampleSize);
+    setAudioFormat(info, sampleRate,channelCount,sampleSize);
     outputDeviceStart();
 }
 
@@ -18,7 +18,7 @@ void AudioPlay::setCurrentVolumn(qreal volumn)
     audio_output_->setVolume(volumn);
 }
 
-void AudioPlay::setAudioFormat(int sampleRate, int channelCount, int sampleSize)
+void AudioPlay::setAudioFormat(const QAudioDeviceInfo& info, int sampleRate, int channelCount, int sampleSize)
 {
     audio_format_.setSampleRate(sampleRate);
     audio_format_.setChannelCount(channelCount);
@@ -27,13 +27,12 @@ void AudioPlay::setAudioFormat(int sampleRate, int channelCount, int sampleSize)
     audio_format_.setByteOrder(QAudioFormat::LittleEndian);
     audio_format_.setSampleType(QAudioFormat::UnSignedInt);
 
-    QAudioDeviceInfo info = QAudioDeviceInfo::defaultOutputDevice();
     if(!info.isFormatSupported(audio_format_))
     {
         qWarning() << "Raw audio format not supported by backend, cannot play audio.";
         return;
     }
-    audio_output_ = new QAudioOutput(audio_format_, this);
+    audio_output_ = new QAudioOutput(info, audio_format_, this);
 }
 
 void AudioPlay::outputDeviceStart()
