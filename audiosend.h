@@ -24,7 +24,7 @@ private slots:
     void handleReadyRead();
 
 signals:
-    void AudioDataReady(const QByteArray &audioByte);
+    void AudioDataReady(const QByteArray& audio_frame);
 };
 
 #endif // AUDIOSEND_H

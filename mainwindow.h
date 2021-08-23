@@ -1,11 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "transport.h"
 #include "audioplay.h"
 #include "audiosend.h"
+#include "transport.h"
+
 #include <QMainWindow>
 #include <QThread>
+#include <QVector>
 
 class MainWindow : public QMainWindow
 {
@@ -15,13 +17,13 @@ public:
     ~MainWindow();
 
 private:
-    QThread audioSendThread;
-    QThread audioPlayThread;
-    QThread transportThread;
+    QThread audio_send_thread_;
+    QVector<QThread*> audio_play_threads_;
+    QThread transport_thread_;
 
-    AudioSend* audioSend = nullptr;
-    AudioPlay* audioPlay = nullptr;
-    Transport* transport = nullptr;
+    AudioSend* audio_send_ = nullptr;
+    QVector<AudioPlay*> audio_play_lists;
+    Transport* transport_ = nullptr;
 };
 
 #endif // MAINWINDOW_H

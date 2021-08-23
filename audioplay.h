@@ -10,10 +10,10 @@ class AudioPlay : public QObject
 {
     Q_OBJECT
 public:
-    AudioPlay(int sampleRate, int channelCount, int sampleSize);
+    AudioPlay(const QAudioDeviceInfo& info, int sampleRate, int channelCount, int sampleSize);
     ~AudioPlay();
     void setCurrentVolumn(qreal volumn);
-    void setAudioFormat(int sampleRate, int channelCount, int sampleSize);
+    void setAudioFormat(const QAudioDeviceInfo& info, int sampleRate, int channelCount, int sampleSize);
     void outputDeviceStart();
 
 private:
@@ -22,7 +22,7 @@ private:
     QAudioFormat audio_format_;
 
 public slots:
-    void PlayAudioData(const QByteArray &frameBuffer);
+    void PlayAudioData(const QByteArray& audio_frame);
 };
 
 #endif // AUDIOPLAY_H
