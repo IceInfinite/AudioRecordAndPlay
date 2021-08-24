@@ -2,10 +2,10 @@
 #include <QDebug>
 
 
-AudioPlay::AudioPlay(const QAudioDeviceInfo& info, int sampleRate, int channelCount, int sampleSize)
+AudioPlay::AudioPlay(const QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size)
 {
-    setAudioFormat(info, sampleRate,channelCount,sampleSize);
-    outputDeviceStart();
+    SetAudioFormat(info, sample_rate,channel_count,sample_size);
+    OutputDeviceStart();
 }
 
 AudioPlay::~AudioPlay()
@@ -13,16 +13,16 @@ AudioPlay::~AudioPlay()
     audio_output_->stop();
     output_device_->close();
 }
-void AudioPlay::setCurrentVolumn(qreal volumn)
+void AudioPlay::SetCurrentVolumn(qreal volumn)
 {
     audio_output_->setVolume(volumn);
 }
 
-void AudioPlay::setAudioFormat(const QAudioDeviceInfo& info, int sampleRate, int channelCount, int sampleSize)
+void AudioPlay::SetAudioFormat(const QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size)
 {
-    audio_format_.setSampleRate(sampleRate);
-    audio_format_.setChannelCount(channelCount);
-    audio_format_.setSampleSize(sampleSize);
+    audio_format_.setSampleRate(sample_rate);
+    audio_format_.setChannelCount(channel_count);
+    audio_format_.setSampleSize(sample_size);
     audio_format_.setCodec("audio/pcm");
     audio_format_.setByteOrder(QAudioFormat::LittleEndian);
     audio_format_.setSampleType(QAudioFormat::UnSignedInt);
@@ -35,12 +35,12 @@ void AudioPlay::setAudioFormat(const QAudioDeviceInfo& info, int sampleRate, int
     audio_output_ = new QAudioOutput(info, audio_format_, this);
 }
 
-void AudioPlay::outputDeviceStart()
+void AudioPlay::OutputDeviceStart()
 {
     output_device_ = audio_output_->start();
 }
 
-void AudioPlay::PlayAudioData(const QByteArray &frameBuffer)
+void AudioPlay::PlayoutAudio(const QByteArray& audio_frame)
 {
-    output_device_->write(frameBuffer);
+    output_device_->write(audio_frame);
 }

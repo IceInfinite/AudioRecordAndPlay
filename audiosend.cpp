@@ -1,44 +1,43 @@
 #include "audiosend.h"
 #include <QDebug>
 
-AudioSend::AudioSend(int sampleRate, int channelCount, int sampleSize)
+AudioSend::AudioSend(QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size)
 {
-    setAudioforamt(sampleRate, channelCount,sampleSize);
-    inputDeviceStart();
+    SetAudioforamt(info sample_rate, channel_count,sample_size);
+    InputDeviceStart();
 }
 AudioSend::~AudioSend()
 {
     audio_input_->stop();
     input_device_->close();
 }
-void AudioSend::setAudioforamt(int sampleRate, int channelCount, int sampleSize)
+void AudioSend::SetAudioforamt(QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size)
 {
-    audio_format_.setSampleRate(sampleRate);
-    audio_format_.setChannelCount(channelCount);
-    audio_format_.setSampleSize(sampleSize);
+    audio_format_.setSampleRate(sample_rate);
+    audio_format_.setChannelCount(channel_count);
+    audio_format_.setSampleSize(sample_size);
     audio_format_.setCodec("audio/pcm");
     audio_format_.setByteOrder(QAudioFormat::LittleEndian);
     audio_format_.setSampleType(QAudioFormat::UnSignedInt);
 
-    QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
     if(!info.isFormatSupported(audio_format_))
     {
         qWarning() << "Default format not supported, trying to use the nearest.";
         audio_format_ = info.nearestFormat(audio_format_);
     }
 
-    audio_input_ = new QAudioInput(audio_format_, this);
+    audio_input_ = new QAudioInput(info, audio_format_, this);
 }
 
-void AudioSend::inputDeviceStart()
+void AudioSend::InputDeviceStart()
 {
     input_device_ = audio_input_->start();
-    connect(input_device_, &QIODevice::readyRead, this, &AudioSend::handleReadyRead);
+    connect(input_device_, &QIODevice::readyRead, this, &AudioSend::HandleReadyRead);
 }
 
-void AudioSend::handleReadyRead()
+void AudioSend::HandleReadyRead()
 {
-    QByteArray audioByte;
-    audioByte = input_device_->readAll();
-    emit AudioDataReady(audioByte);
+    QByteArray audio_byte;
+    audio_byte = input_device_->readAll();
+    emit AudioByteReady(audio_byte);
 }

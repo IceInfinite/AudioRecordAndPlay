@@ -10,11 +10,11 @@ class AudioPlay : public QObject
 {
     Q_OBJECT
 public:
-    AudioPlay(const QAudioDeviceInfo& info, int sampleRate, int channelCount, int sampleSize);
+    AudioPlay(const QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size);
     ~AudioPlay();
-    void setCurrentVolumn(qreal volumn);
-    void setAudioFormat(const QAudioDeviceInfo& info, int sampleRate, int channelCount, int sampleSize);
-    void outputDeviceStart();
+    void SetCurrentVolumn(qreal volumn);
+    void SetAudioFormat(const QAudioDeviceInfo& info, int sample_rate, int channelCount, int sample_size);
+    void OutputDeviceStart();
 
 private:
     QAudioOutput* audio_output_ = nullptr;
@@ -22,7 +22,7 @@ private:
     QAudioFormat audio_format_;
 
 public slots:
-    void PlayAudioData(const QByteArray& audio_frame);
+    void PlayoutAudio(const QByteArray& audio_frame);
 };
 
 #endif // AUDIOPLAY_H
