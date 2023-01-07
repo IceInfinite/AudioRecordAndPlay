@@ -1,7 +1,7 @@
 #ifndef TRANSPORT_H
 #define TRANSPORT_H
 
-#include <QWidget>
+#include <QObject>
 #include <QByteArray>
 
 // TODO 音频帧大小影响效果，时间越短效果越差，原因未知
@@ -11,6 +11,7 @@ const static int FRAME_LEN = 800; //单个音频帧长度800字节，50ms音频�
 class Transport : public QObject
 {
     Q_OBJECT
+
 public:
     Transport();
     ~Transport();

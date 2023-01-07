@@ -1,7 +1,9 @@
 #include "audiosend.h"
+
 #include <QDebug>
 
-AudioSend::AudioSend(QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size)
+AudioSend::AudioSend(
+    QAudioDeviceInfo &info, int sample_rate, int channel_count, int sample_size)
 {
     SetAudioforamt(info, sample_rate, channel_count, sample_size);
     InputDeviceStart();
@@ -13,7 +15,8 @@ AudioSend::~AudioSend()
     input_device_->close();
 }
 
-void AudioSend::SetAudioforamt(QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size)
+void AudioSend::SetAudioforamt(
+    QAudioDeviceInfo &info, int sample_rate, int channel_count, int sample_size)
 {
     audio_format_.setSampleRate(sample_rate);
     audio_format_.setChannelCount(channel_count);
@@ -22,9 +25,10 @@ void AudioSend::SetAudioforamt(QAudioDeviceInfo& info, int sample_rate, int chan
     audio_format_.setByteOrder(QAudioFormat::LittleEndian);
     audio_format_.setSampleType(QAudioFormat::UnSignedInt);
 
-    if(!info.isFormatSupported(audio_format_))
+    if (!info.isFormatSupported(audio_format_))
     {
-        qWarning() << "Default format not supported, trying to use the nearest.";
+        qWarning()
+            << "Default format not supported, trying to use the nearest.";
         audio_format_ = info.nearestFormat(audio_format_);
     }
 
@@ -34,7 +38,9 @@ void AudioSend::SetAudioforamt(QAudioDeviceInfo& info, int sample_rate, int chan
 void AudioSend::InputDeviceStart()
 {
     input_device_ = audio_input_->start();
-    connect(input_device_, &QIODevice::readyRead, this, &AudioSend::HandleReadyRead);
+    connect(
+        input_device_, &QIODevice::readyRead, this,
+        &AudioSend::HandleReadyRead);
 }
 
 void AudioSend::HandleReadyRead()
