@@ -12,6 +12,11 @@
 #include <QLabel>
 #include <QComboBox>
 
+namespace Ui
+{
+class MainWindow;
+} // namespace Ui
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -19,13 +24,13 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-    void CreateWidgets();
     void Init();
     void Start();
     void Stop();
 
-
 private:
+    Ui::MainWindow *ui_;
+
     QThread audio_send_thread_;
     QThread transport_thread_;
     QVector<QThread*> audio_play_threads_;
@@ -34,18 +39,14 @@ private:
     Transport* transport_ = nullptr;
     QVector<AudioPlay*> audio_play_lists_;
 
-    QAudioDeviceInfo  input_device_info_;
+    QAudioDeviceInfo input_device_info_;
 
     bool running_ = false;
-private:
-    QPushButton* start_button_;
-    QLabel* device_label_;
-    QComboBox* device_box_;
 
 private slots:
-    void ToggleStart();
+    void on_play_btn_clicked();
+    void on_device_comboBox_currentIndexChanged(int index);
     void ModeChanged(int id);
-    void DeviceChanged(int id);
 
 };
 

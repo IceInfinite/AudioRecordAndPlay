@@ -3,14 +3,16 @@
 
 AudioSend::AudioSend(QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size)
 {
-    SetAudioforamt(info sample_rate, channel_count,sample_size);
+    SetAudioforamt(info, sample_rate, channel_count, sample_size);
     InputDeviceStart();
 }
+
 AudioSend::~AudioSend()
 {
     audio_input_->stop();
     input_device_->close();
 }
+
 void AudioSend::SetAudioforamt(QAudioDeviceInfo& info, int sample_rate, int channel_count, int sample_size)
 {
     audio_format_.setSampleRate(sample_rate);
